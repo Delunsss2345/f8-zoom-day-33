@@ -12,7 +12,6 @@ export class ModalComponent extends HTMLElement {
   }
 
   connectedCallback() {
-    this.#setupEventListener();
     this.hidden = true;
   }
 
