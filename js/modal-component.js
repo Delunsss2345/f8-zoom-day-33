@@ -4,6 +4,7 @@ export class ModalComponent extends HTMLElement {
   #closeBtn;
   #modalContainer;
   #isOpen = false;
+  #handleKey;
 
   constructor() {
     super();
@@ -167,9 +168,10 @@ export class ModalComponent extends HTMLElement {
   }
 
   close() {
+    this.#isOpen = false;
+
     this.#modalContainer.style.animation = "modalFadeOut 0.4s";
     this.#backdrop.style.animation = "modalBackdropFadeOut 0.4s";
-
     const handleAnimationEnd = () => {
       this.#modalContainer.removeEventListener(
         "animationend",
@@ -179,7 +181,6 @@ export class ModalComponent extends HTMLElement {
       this.#backdrop = null;
       this.#modalContainer = null;
       this.#closeBtn = null;
-      this.#isOpen = false;
       this.hidden = true;
     };
 
