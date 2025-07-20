@@ -12,9 +12,6 @@ export class ModalComponent extends HTMLElement {
 
   connectedCallback() {
     this.#setupEventListener();
-    requestAnimationFrame(() => {
-      this.hidden = false;
-    });
   }
 
   #init() {
@@ -67,7 +64,7 @@ export class ModalComponent extends HTMLElement {
         this.close();
       }
     });
-    this.#closeBtn.addEventListener("click", (e) => {
+    this.#closeBtn?.addEventListener("click", (e) => {
       this.close();
     });
     document.addEventListener("keydown", this.#handleKeyDown.bind(this));
@@ -77,23 +74,31 @@ export class ModalComponent extends HTMLElement {
     if (!this.#backdrop) {
       this.#init(); //Bấm rồi mới tải chư xog
       this.#setupEventListener();
+      this.#backdrop.style.animation = "modalBackdropFadeIn 0.4s";
+      this.#modalContainer.style.animation = "modalFadeIn 0.4s";
     }
     this.#isOpen = true;
-    this.#backdrop?.classList.add("show");
     this.hidden = false;
     this.dispatchEvent(new CustomEvent("modal:open"));
   }
 
   close() {
-    requestAnimationFrame(() => {
+    this.#modalContainer.style.animation = "modalFadeOut 0.4s";
+    this.#backdrop.style.animation = "modalBackdropFadeOut 0.4s";
+    const handleAnimationEnd = () => {
+      this.#modalContainer.removeEventListener(
+        "animationend",
+        handleAnimationEnd
+      );
       this.#shadow.innerHTML = "";
       this.#backdrop = null;
       this.#modalContainer = null;
       this.#closeBtn = null;
-    });
-    this.#isOpen = false;
-    this.#backdrop?.classList.remove("show");
-    this.hidden = true;
+      this.#isOpen = false;
+      this.hidden = true;
+    };
+
+    this.#modalContainer.addEventListener("animationend", handleAnimationEnd);
     this.dispatchEvent(new CustomEvent("modal:close"));
   }
 }
