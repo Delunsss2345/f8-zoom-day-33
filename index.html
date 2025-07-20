@@ -4,20 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Modal Component</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <div class="fixed inset-0 flex items-center justify-center bg-gray-800">
+    <div
+      class="fixed inset-0 flex items-center justify-center gap-4 bg-slate-400"
+    >
       <button
-        onclick="openModal()"
-        class="p-2 border border-slate-100 rounded-md hover:bg-slate-950 text-white transition-colors duration-300 shadow-md"
+        onclick="openModal1()"
+        class="p-2 border border-slate-100 rounded-md hover:bg-slate-200 text-slate-900 font-semibold transition-colors duration-300 shadow-lg bg-white"
       >
-        Open Login
+        Open 1
+      </button>
+
+      <button
+        onclick="openModal2()"
+        class="p-2 border border-slate-100 rounded-md hover:bg-slate-200 text-slate-900 font-semibold transition-colors duration-300 shadow-lg bg-white"
+      >
+        Open 2
+      </button>
+
+      <button
+        onclick="openModal3()"
+        class="p-2 border border-slate-100 rounded-md hover:bg-slate-200 text-slate-900 font-semibold transition-colors duration-300 shadow-lg bg-white"
+      >
+        Open 3
       </button>
     </div>
 
-    <app-modal id="modal" hidden>
+    <app-modal id="modal">
       <div
         slot="heading"
         class="flex items-center justify-between p-6 border-b border-gray-200"
@@ -41,7 +56,6 @@
               Aspernatur, animi.
             </p>
           </div>
-
           <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
             <h4 class="font-semibold text-green-800 mb-1">🚀 Thử nghiệm</h4>
             <p class="text-green-700 text-sm">
@@ -70,20 +84,112 @@
       </div>
     </app-modal>
 
+    <app-modal id="modalWelcome2">
+      <div
+        slot="heading"
+        class="flex items-center justify-between p-6 border-b border-gray-200"
+      >
+        <h2 class="text-2xl font-bold text-gray-800">
+          Đây là modal để xoá gì đó
+        </h2>
+      </div>
+
+      <div slot="body" class="p-6 space-y-4">
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+          <h4 class="font-semibold text-yellow-800 mb-1">⚠️ Cảnh báo</h4>
+          <p class="text-yellow-700 text-sm">
+            Bạn sắp thực hiện một hành động quan trọng.
+          </p>
+        </div>
+      </div>
+
+      <div
+        slot="footer"
+        class="flex justify-end gap-3 p-4 border-t border-gray-200 bg-gray-50"
+      >
+        <button
+          onclick="document.getElementById('modalWelcome2').close()"
+          class="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+        >
+          Huỷ
+        </button>
+        <button
+          class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+        >
+          Xoá
+        </button>
+      </div>
+    </app-modal>
+
+    <app-modal id="modalWelcome3">
+      <div
+        slot="heading"
+        class="flex items-center justify-between p-6 border-b border-gray-200"
+      >
+        <h2 class="text-2xl font-bold text-gray-800">
+          🌟 Đây là modal để đọc gì đó
+        </h2>
+      </div>
+
+      <div slot="body" class="p-6 space-y-4">
+        <div class="text-center">
+          <h3 class="text-xl font-semibold text-gray-800">
+            Hướng dẫn sử dụng hệ thống
+          </h3>
+          <p class="text-gray-600">
+            Vui lòng dành ít phút để đọc qua nội dung bên dưới. Nó sẽ giúp bạn
+            bắt đầu nhanh chóng và hiệu quả hơn.
+          </p>
+        </div>
+
+        <div
+          class="bg-white border border-gray-200 rounded-md p-4 shadow-inner max-h-60 overflow-y-auto space-y-2 text-sm text-gray-700"
+        >
+          <p><strong>Bước 1:</strong> Kiểm tra xem độ đẹp trai của bạn</p>
+          <p>
+            <strong>Bước 2:</strong> Độ đẹp trai của bạn đã được xác nhận. Hãy
+            đăng nhập vào hệ thống bằng tài khoản của bạn.
+          </p>
+        </div>
+      </div>
+
+      <div
+        slot="footer"
+        class="flex justify-end gap-3 p-4 border-t border-gray-200 bg-gray-50"
+      >
+        <button
+          onclick="document.getElementById('modalWelcome3').close()"
+          class="px-4 py-2 text-gray-600 hover:text-gray-800"
+        >
+          Đóng
+        </button>
+      </div>
+    </app-modal>
+
     <script src="./js/app.js" type="module"></script>
 
     <script>
-      function openModal() {
+      function openModal1() {
         const modal = document.getElementById("modal");
         modal.open();
       }
 
-      const modalId = document.getElementById("modal");
-      modalId.addEventListener("modal:open", () => {
-        console.log("Modal open");
-      });
-      modalId.addEventListener("modal:close", () => {
-        console.log("Modal close");
+      function openModal2() {
+        const modal = document.getElementById("modalWelcome2");
+        modal.open();
+      }
+
+      function openModal3() {
+        const modal = document.getElementById("modalWelcome3");
+        modal.open();
+      }
+
+      ["modal", "modalWelcome2", "modalWelcome3"].forEach((id) => {
+        const modal = document.getElementById(id);
+        modal.addEventListener("modal:open", () => console.log(`${id} opened`));
+        modal.addEventListener("modal:close", () =>
+          console.log(`${id} closed`)
+        );
       });
     </script>
   </body>
